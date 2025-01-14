@@ -7,12 +7,23 @@ export async function GET(
   { params }: any
 ): Promise<NextResponse> {
   const { id } = params as { id: string };
-
   const property = properties.find((prop) => prop.id === id);
 
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+
   if (!property) {
-    return NextResponse.json({ error: "Property not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Property not found" },
+      {
+        status: 404,
+        headers: corsHeaders,
+      }
+    );
   }
 
-  return NextResponse.json(property);
+  return NextResponse.json(property, { headers: corsHeaders });
 }
