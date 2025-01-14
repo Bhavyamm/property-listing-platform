@@ -4,24 +4,28 @@ import { notFound } from "next/navigation";
 import { Property } from "@/lib/types";
 
 async function fetchPropertyFromApi(id: string): Promise<Property | null> {
+  console.log(id, "id")
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  console.log(baseUrl, "baseUrl")
   const response = await fetch(`${baseUrl}/api/properties/${id}`, {
     cache: "no-store",
-    next: { revalidate: 60 },
   });
   if (!response.ok) {
     return null;
   }
   const property: Property = await response.json();
+  console.log(property, "property")
   return property;
 }
 
 export default async function PropertyDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const property = await fetchPropertyFromApi(params.id);
+  const { id } = await params;
+
+  const property = await fetchPropertyFromApi(id);
 
   if (!property) {
     notFound();
@@ -30,7 +34,6 @@ export default async function PropertyDetailPage({
   return (
     <div className="p-4 max-w-4xl mx-auto space-y-4">
       <h1 className="text-3xl font-bold mb-4">{property.title}</h1>
-
       {property.images[0] && (
         <Image
           src={property.images[0]}
@@ -71,8 +74,7 @@ export default async function PropertyDetailPage({
             <span className="font-medium">Baths:</span> {property.specs.baths}
           </p>
           <p>
-            <span className="font-medium">Area:</span> {property.specs.area}{" "}
-            sqft
+            <span className="font-medium">Area:</span> {property.specs.area} sqft
           </p>
         </div>
       )}

@@ -49,7 +49,7 @@ export default function PropertyList({ filters = {} }: PropertyListProps) {
         const data: Property[] = await res.json();
         setProperties(data);
       } catch (err) {
-        // setError(err.message);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -65,6 +65,7 @@ export default function PropertyList({ filters = {} }: PropertyListProps) {
       const data = await searchProperties({query: searchQuery}, properties);
       setProperties(data);
     } catch (err) {
+      console.error(err);
       setError("Failed to search properties");
     } finally {
       setLoading(false);

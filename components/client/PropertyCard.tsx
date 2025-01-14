@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Property } from "@/lib/types";
 
@@ -26,21 +26,6 @@ export function PropertyCardSkeleton() {
 }
 
 export function PropertyCard({ data }: PropertyCardProps) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleFavorite = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      // Placeholder for favorite functionality
-    } catch (err) {
-      setError("Failed to update favorite status.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="border border-gray-200 rounded-md shadow hover:shadow-lg transition duration-200 overflow-hidden">
       {data.images[0] && (
@@ -85,15 +70,6 @@ export function PropertyCard({ data }: PropertyCardProps) {
             <span>{data.specs.area} sqft</span>
           </div>
         )}
-
-        <button
-          onClick={handleFavorite}
-          disabled={loading}
-          className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition disabled:opacity-50 mb-2"
-        >
-          {loading ? "Updating..." : "Favorite"}
-        </button>
-        {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
       </div>
     </div>
   );
